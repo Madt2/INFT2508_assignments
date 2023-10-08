@@ -15,5 +15,11 @@ export const BUTTON_COLORS = {
 export const COLORS = {
   WHITE: '#FFFFFF',
   RED: '#C22E44',
+  BLUE: '#0023F5',
+  ORANGE: '#E67447',
+  PURPLE: '#732872',
+  YELLOW: '#F8CD46',
+  GRAY: '#3A3A3A',
+  LIGHT_BLACK: '#050B1F',
   PRIMARY_BACKGROUND: '#F7F5FA',
 };

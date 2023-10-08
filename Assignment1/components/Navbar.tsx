@@ -1,20 +1,24 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {LottoLogo} from '../assets';
-import HamburgerMenu from './navbar_components/HambugerMenu';
+import {Pressable, StyleSheet, View} from 'react-native';
+import {LottoLogo} from '../assets/';
+import {MainPage} from '../pages/MainPage';
+import {ChangePage} from '../store';
 import LoginBtn from './buttons/LoginBtn';
 import Back from './navbar_components/Back';
+import HamburgerMenuBtn from './navbar_components/HambugerMenuBtn';
 
 export default function Navbar() {
   return (
     <View style={styles.header}>
-      <View style={styles.headerLeft}>
+      <Pressable
+        onPress={() => ChangePage(MainPage())}
+        style={styles.headerLeft}>
         <Back />
         <LottoLogo />
-      </View>
+      </Pressable>
       <View style={styles.headerRight}>
         <LoginBtn />
-        <HamburgerMenu />
+        <HamburgerMenuBtn />
       </View>
     </View>
   );
