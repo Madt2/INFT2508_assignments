@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text} from 'react-native';
+import {GestureResponderEvent, Pressable, StyleSheet, Text} from 'react-native';
 import mainStyles from '../../styles';
 import {BUTTON_COLORS, COLORS, TEXT_COLORS} from '../../values/color';
 
 type OneLabelProps = {
   label: string;
+  onPress: (event: GestureResponderEvent) => void;
 };
 
 type TwoLabelProps = {
@@ -13,15 +14,8 @@ type TwoLabelProps = {
 };
 
 export const LottoBtnOneText = (props: OneLabelProps) => {
-  const [state, setState] = useState(false);
-
   return (
-    <Pressable
-      style={styles.BtnBorder}
-      onPress={() => {
-        setState(!state);
-        console.log('LottoBtn1Text ' + state);
-      }}>
+    <Pressable style={styles.BtnBorder} onPress={props.onPress}>
       <Text style={[mainStyles.Text, styles.BtnText]}>{props.label}</Text>
     </Pressable>
   );
@@ -36,7 +30,6 @@ export const LottoBtnTwoText = (props: TwoLabelProps) => {
       style={[styles.BtnBorder, {paddingTop: 8}]}
       onPress={() => {
         setState(!state);
-        console.log('LottoBtn2Text ' + state);
       }}>
       <Text style={[mainStyles.Text, styles.BtnBigText]}>{props.label1}</Text>
       <Text style={[mainStyles.Text, styles.BtnSmallText]}>{props.label2}</Text>

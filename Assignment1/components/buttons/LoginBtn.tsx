@@ -10,7 +10,6 @@ export default function LoginBtn() {
       style={styles.BtnBorder}
       onPress={() => {
         setState(!state);
-        console.log('LoginBtn ' + state);
       }}>
       <Text style={styles.BtnText}>Login</Text>
     </Pressable>

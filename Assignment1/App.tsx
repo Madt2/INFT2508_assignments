@@ -1,24 +1,8 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {HamburgerMenu} from './components/HamburgerMenu';
-import {store} from './store';
+import {TabNav} from './navigation/TabNav';
 
 function App() {
-  const page = store.useState(state => state.page);
-
-  return (
-    <View style={styles.View}>
-      <HamburgerMenu />
-      {page}
-    </View>
-  );
+  return <TabNav />;
 }
 
 export default App;
-
-const styles = StyleSheet.create({
-  View: {
-    height: '100%',
-    width: '100%',
-  },
-});

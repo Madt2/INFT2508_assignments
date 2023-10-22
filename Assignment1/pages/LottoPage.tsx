@@ -3,12 +3,12 @@ import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {AgeRatingIcon} from './../assets';
 import ExtraLottoGrid from './../components/ExtraLottoGrid';
 import LottoGrid from './../components/LottoGrid';
-import Navbar from './../components/Navbar';
+//import Navbar from './../components/Navbar';
 import ResultBtn from './../components/buttons/ResultBtn';
 import mainStyles from './../styles';
 import {COLORS, TEXT_COLORS} from './../values/color';
 
-export const LottoPage = () => {
+export const LottoPage = ({navigation}) => {
   return (
     <View style={styles.Main}>
       {/* Background */}
@@ -16,8 +16,7 @@ export const LottoPage = () => {
 
       {/* Top Half of Lotto page */}
       <SafeAreaView style={styles.SafeAreaView}>
-        <Navbar />
-
+        {/* <Navbar /> */}
         <Text style={[mainStyles.Text, styles.BigText]}>
           Nye Lotto-millionærer hver lørdag
         </Text>
@@ -36,7 +35,7 @@ export const LottoPage = () => {
             <Text style={{color: TEXT_COLORS.LIGHT_BLUE}}>lørdager</Text>
           </Text>
 
-          <LottoGrid />
+          <LottoGrid navigation={navigation} />
         </View>
       </SafeAreaView>
 

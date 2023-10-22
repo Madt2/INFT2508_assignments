@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
+import {GestureResponderEvent, Pressable, StyleSheet, View} from 'react-native';
 import {
   EurojackpotLogo,
   ExtraLogo,
@@ -9,27 +9,19 @@ import {
   NabolagetLogo,
   VikinglottoLogo,
 } from '../../assets';
-import {EuroJackpotPage} from '../../pages/EuroJackpotPage';
-import {ExtraPage} from '../../pages/ExtraPage';
-import {JokerPage} from '../../pages/JokerPage';
-import {KenoPage} from '../../pages/KenoPage';
-import {LottoPage} from '../../pages/LottoPage';
-import {NabolagetPage} from '../../pages/NabolagetPage';
-import {VikingLottoPage} from '../../pages/VikingLottoPage';
-import {ChangePage} from '../../store';
 import {COLORS} from '../../values/color';
 
 type BtnProps = {
   color: string;
   icon: ReactElement;
   isSmall: boolean;
-  pageDirect: ReactElement;
+  onPress: (event: GestureResponderEvent) => void;
 };
 
 const BtnBase = (props: BtnProps) => {
   return (
     <Pressable
-      onPress={() => ChangePage(props.pageDirect)}
+      onPress={props.onPress}
       style={[
         styles.BtnBase,
         {backgroundColor: props.color},
@@ -45,12 +37,13 @@ const BtnBase = (props: BtnProps) => {
 
 type BtnTypeProps = {
   isSmall: boolean;
+  onPress: (event: GestureResponderEvent) => void;
 };
 
 export const LottoBtn = (props: BtnTypeProps) => {
   return (
     <BtnBase
-      pageDirect={LottoPage()}
+      onPress={props.onPress}
       isSmall={props.isSmall}
       color={COLORS.RED}
       icon={<LottoLogo />}
@@ -61,7 +54,7 @@ export const LottoBtn = (props: BtnTypeProps) => {
 export const VikinglottoBtn = (props: BtnTypeProps) => {
   return (
     <BtnBase
-      pageDirect={VikingLottoPage()}
+      onPress={props.onPress}
       isSmall={props.isSmall}
       color={COLORS.BLUE}
       icon={<VikinglottoLogo />}
@@ -72,7 +65,7 @@ export const VikinglottoBtn = (props: BtnTypeProps) => {
 export const NabolagetBtn = (props: BtnTypeProps) => {
   return (
     <BtnBase
-      pageDirect={NabolagetPage()}
+      onPress={props.onPress}
       isSmall={props.isSmall}
       color={COLORS.ORANGE}
       icon={<NabolagetLogo />}
@@ -83,7 +76,7 @@ export const NabolagetBtn = (props: BtnTypeProps) => {
 export const EurojackpotBtn = (props: BtnTypeProps) => {
   return (
     <BtnBase
-      pageDirect={EuroJackpotPage()}
+      onPress={props.onPress}
       isSmall={props.isSmall}
       color={COLORS.LIGHT_BLACK}
       icon={<EurojackpotLogo />}
@@ -94,7 +87,7 @@ export const EurojackpotBtn = (props: BtnTypeProps) => {
 export const ExtraBtn = (props: BtnTypeProps) => {
   return (
     <BtnBase
-      pageDirect={ExtraPage()}
+      onPress={props.onPress}
       isSmall={props.isSmall}
       color={COLORS.PURPLE}
       icon={<ExtraLogo />}
@@ -105,7 +98,7 @@ export const ExtraBtn = (props: BtnTypeProps) => {
 export const JokerBtn = (props: BtnTypeProps) => {
   return (
     <BtnBase
-      pageDirect={JokerPage()}
+      onPress={props.onPress}
       isSmall={props.isSmall}
       color={COLORS.YELLOW}
       icon={<JokerLogo />}
@@ -116,7 +109,7 @@ export const JokerBtn = (props: BtnTypeProps) => {
 export const KenoBtn = (props: BtnTypeProps) => {
   return (
     <BtnBase
-      pageDirect={KenoPage()}
+      onPress={props.onPress}
       isSmall={props.isSmall}
       color={COLORS.GRAY}
       icon={<KenoLogo />}

@@ -10,18 +10,39 @@ import {
   VikinglottoBtn,
 } from '../components/buttons/TippeTypeBtns';
 
-export const MainPage = () => {
+export const MainPage = ({navigation}) => {
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <ScrollView style={styles.ScrollView}>
         <View style={styles.View}>
-          <LottoBtn isSmall={false} />
-          <VikinglottoBtn isSmall={false} />
-          <NabolagetBtn isSmall={false} />
-          <EurojackpotBtn isSmall={false} />
-          <ExtraBtn isSmall={false} />
-          <JokerBtn isSmall={false} />
-          <KenoBtn isSmall={false} />
+          <LottoBtn
+            onPress={() => navigation.navigate('Lotto')}
+            isSmall={false}
+          />
+          <VikinglottoBtn
+            onPress={() => navigation.navigate('VikingLotto')}
+            isSmall={false}
+          />
+          <NabolagetBtn
+            onPress={() => navigation.navigate('Nabolaget')}
+            isSmall={false}
+          />
+          <EurojackpotBtn
+            onPress={() => navigation.navigate('Eurojackpot')}
+            isSmall={false}
+          />
+          <ExtraBtn
+            onPress={() => navigation.navigate('Extra')}
+            isSmall={false}
+          />
+          <JokerBtn
+            onPress={() => navigation.navigate('Joker')}
+            isSmall={false}
+          />
+          <KenoBtn
+            onPress={() => navigation.navigate('Keno')}
+            isSmall={false}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

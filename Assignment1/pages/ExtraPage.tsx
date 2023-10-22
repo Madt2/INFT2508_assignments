@@ -1,13 +1,11 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import Navbar from '../components/Navbar';
 import {COLORS} from '../values/color';
 
 export const ExtraPage = () => {
   return (
     <View style={styles.Background}>
       <SafeAreaView style={styles.SafeAreaView}>
-        <Navbar />
         <View style={styles.Container}>
           <Text style={styles.Text}>Welcome to Extra</Text>
         </View>
