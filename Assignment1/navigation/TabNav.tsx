@@ -1,6 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
+import {FetchExamplePage} from '../pages/FetchExamplePage';
 import {MyTicketsPage} from '../pages/MyTicketsPage';
 import {ProfilePage} from '../pages/ProfilePage';
 import {StackNav} from './StackNav';
@@ -17,6 +18,7 @@ export const TabNav = () => {
         />
         <Tab.Screen name="My Tickets" component={MyTicketsPage} />
         <Tab.Screen name="Profile" component={ProfilePage} />
+        <Tab.Screen name="Fetch Example" component={FetchExamplePage} />
       </Tab.Navigator>
     </NavigationContainer>
   );

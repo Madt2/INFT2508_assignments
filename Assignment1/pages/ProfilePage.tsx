@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {COLORS, TEXT_COLORS} from '../values/color';
 
@@ -46,6 +46,37 @@ const ProfileInfo = (props: profileProps) => {
 };
 
 export const ProfilePage = () => {
+  type profile = {
+    name: string;
+    age: number;
+    sex: string;
+    address: string;
+    bankAccoutNr: number;
+  };
+
+  const [profile, setProfile] = useState<profile>({
+    name: 'name',
+    age: 0,
+    sex: 'none',
+    address: 'adress',
+    bankAccoutNr: 0,
+  });
+
+  const getProfile = async () => {
+    const response = await fetch('http://localhost:3000/profile/');
+    const data = await response.json();
+    const responseProfile: profile = {
+      name: data.name,
+      age: data.age,
+      sex: data.sex,
+      address: data.address,
+      bankAccoutNr: data.bankaccountnr,
+    };
+    setProfile(responseProfile);
+  };
+
+  getProfile();
+
   return (
     <View style={styles.PageContainer}>
       {/* Image source: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fportrait&psig=AOvVaw1WZRC0VmXbiwwfT9NbAWqK&ust=1697891975372000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCIiu4tLShIIDFQAAAAAdAAAAABAE */}
@@ -54,11 +85,11 @@ export const ProfilePage = () => {
         source={require('../assets/Images/StockImagePerson.jpg')}
       />
       <ProfileInfo
-        name={'Oda'}
-        age={28}
-        sex={'female'}
-        address={'Hagegata 28, 4023 Skogsby'}
-        bankAccountNr={39405836495}
+        name={profile.name}
+        age={profile.age}
+        sex={profile.sex}
+        address={profile.address}
+        bankAccountNr={profile.bankAccoutNr}
       />
     </View>
   );

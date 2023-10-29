@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Alert,
   Pressable,
@@ -10,34 +10,67 @@ import {
 import {TicketRow} from '../components/Tickets';
 import {COLORS} from '../values/color';
 
+// Moved to Server
+//
+//   const randTicket = () => {
+//     const ticket = [0, 0, 0, 0, 0, 0, 0];
+//     const numberPool = [
+//       1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+//       22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+//     ];
+//     for (let i = 0; i < ticket.length; i++) {
+//       const index = Math.floor(Math.random() * numberPool.length);
+//       ticket[i] = numberPool[index];
+//       numberPool.slice(index, 1);
+//     }
+//     return ticket as [number, number, number, number, number, number, number];
+//   };
+
+//   const ticketRow1 = (
+//     <TicketRow number={1} active={false} slots={randTicket()} />
+//   );
+//   const ticketRow2 = (
+//     <TicketRow number={2} active={false} slots={randTicket()} />
+//   );
+
 export const TicketsPage = ({navigation}) => {
-  const randTicket = () => {
-    const ticket = [0, 0, 0, 0, 0, 0, 0];
-    const numberPool = [
-      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-      22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
-    ];
-    for (let i = 0; i < ticket.length; i++) {
-      const index = Math.floor(Math.random() * numberPool.length);
-      ticket[i] = numberPool[index];
-      numberPool.slice(index, 1);
-    }
-    return ticket as [number, number, number, number, number, number, number];
+  const [tickets, setTickets] = useState([
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+  ]);
+
+  const getTicketRow = async () => {
+    const response = await fetch('http://localhost:3000/tickets/');
+    const data = await response.json();
+    setTickets(data);
   };
 
-  const ticketRow1 = (
-    <TicketRow number={1} active={false} slots={randTicket()} />
-  );
-  const ticketRow2 = (
-    <TicketRow number={2} active={false} slots={randTicket()} />
-  );
+  useEffect(() => {
+    getTicketRow();
+  }, []);
+
+  const ticketRow1 = () => {
+    return <TicketRow number={1} active={false} slots={tickets[0]} />;
+  };
+
+  const ticketRow2 = () => {
+    return <TicketRow number={2} active={false} slots={tickets[1]} />;
+  };
 
   return (
     <SafeAreaView>
       <View style={styles.pageContainer}>
         <View style={styles.ticketRows}>
-          {ticketRow1}
-          {ticketRow2}
+          {ticketRow1()}
+          {ticketRow2()}
           <TicketRow number={3} active={false} slots={[0, 0, 0, 0, 0, 0, 0]} />
           <TicketRow number={4} active={false} slots={[0, 0, 0, 0, 0, 0, 0]} />
           <TicketRow number={5} active={false} slots={[0, 0, 0, 0, 0, 0, 0]} />
@@ -58,8 +91,8 @@ export const TicketsPage = ({navigation}) => {
           <Pressable
             onPress={() =>
               navigation.navigate('Ticket Overview', {
-                TicketRow1: ticketRow1,
-                TicketRow2: ticketRow2,
+                TicketRow1: ticketRow1(),
+                TicketRow2: ticketRow2(),
               })
             }
             style={styles.button}>

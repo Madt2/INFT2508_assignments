@@ -30,7 +30,7 @@ const TicketSlot = (props: SlotProps) => {
 type ticketRowProps = {
   number: number;
   active: boolean;
-  slots: [number, number, number, number, number, number, number];
+  slots: number[];
 };
 
 export const TicketRow = (props: ticketRowProps) => {
