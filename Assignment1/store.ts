@@ -1,26 +1,15 @@
 import {Store} from 'pullstate';
-import {ReactElement} from 'react';
-import {MainPage} from './pages/MainPage';
 
 interface store {
-  page: ReactElement;
-  hamburgerMenu: boolean;
+  theme: string;
 }
 
 export const store = new Store<store>({
-  page: MainPage(),
-  hamburgerMenu: false,
+  theme: 'light',
 });
 
-export const ChangePage = (page: ReactElement) => {
+export const changeTheme = (theme: string) => {
   store.update(state => {
-    state.page = page;
-    state.hamburgerMenu = false;
-  });
-};
-
-export const ToggleHamburgerMenu = () => {
-  store.update(state => {
-    state.hamburgerMenu = !state.hamburgerMenu;
+    state.theme = theme;
   });
 };

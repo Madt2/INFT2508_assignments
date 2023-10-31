@@ -1,5 +1,15 @@
-import React, {useState} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useIsFocused} from '@react-navigation/core';
+import React, {useEffect, useState} from 'react';
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {COLORS, TEXT_COLORS} from '../values/color';
 
 type profileProps = {
@@ -8,18 +18,28 @@ type profileProps = {
   sex: string;
   address: string;
   bankAccountNr: number;
+  theme: string;
 };
 
 type InformationRowProps = {
   label: string;
   info: string;
+  theme: string;
 };
 
 const InformationRow = (props: InformationRowProps) => {
+  const viewTheme: StyleProp<ViewStyle> =
+    props.theme === 'dark'
+      ? darkTheme.InformationRows
+      : lightTheme.InformationRows;
+  const labelTheme: StyleProp<TextStyle> =
+    props.theme === 'dark' ? darkTheme.LabelText : lightTheme.LabelText;
+  const infoTextTheme: StyleProp<TextStyle> =
+    props.theme === 'dark' ? darkTheme.InfoText : lightTheme.InfoText;
   return (
-    <View style={styles.InformationRows}>
-      <Text style={styles.LabelText}>{props.label}: </Text>
-      <Text style={styles.InfoText}>{props.info}</Text>
+    <View style={viewTheme}>
+      <Text style={labelTheme}>{props.label}: </Text>
+      <Text style={infoTextTheme}>{props.info}</Text>
     </View>
   );
 };
@@ -27,11 +47,16 @@ const InformationRow = (props: InformationRowProps) => {
 const ProfileInfo = (props: profileProps) => {
   return (
     <View style={styles.informationRowContainer}>
-      <InformationRow label="Name" info={props.name} />
-      <InformationRow label="Age" info={props.age.toString()} />
-      <InformationRow label="Sex" info={props.sex} />
-      <InformationRow label="Adress" info={props.address} />
+      <InformationRow theme={props.theme} label="Name" info={props.name} />
       <InformationRow
+        theme={props.theme}
+        label="Age"
+        info={props.age.toString()}
+      />
+      <InformationRow theme={props.theme} label="Sex" info={props.sex} />
+      <InformationRow theme={props.theme} label="Adress" info={props.address} />
+      <InformationRow
+        theme={props.theme}
         label="Bank Account Number"
         info={
           props.bankAccountNr.toString().slice(0, 4) +
@@ -46,6 +71,24 @@ const ProfileInfo = (props: profileProps) => {
 };
 
 export const ProfilePage = () => {
+  const [theme, setTheme] = useState<string>('light');
+  const isFocused = useIsFocused();
+
+  const getTheme = async () => {
+    try {
+      const storageTheme = await AsyncStorage.getItem('theme');
+      if (storageTheme !== null) {
+        setTheme(storageTheme);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTheme();
+  }, [isFocused]);
+
   type profile = {
     name: string;
     age: number;
@@ -62,6 +105,11 @@ export const ProfilePage = () => {
     bankAccoutNr: 0,
   });
 
+  useEffect(() => {
+    getProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const getProfile = async () => {
     const response = await fetch('http://localhost:3000/profile/');
     const data = await response.json();
@@ -75,16 +123,18 @@ export const ProfilePage = () => {
     setProfile(responseProfile);
   };
 
-  getProfile();
+  const viewTheme: StyleProp<ViewStyle> =
+    theme === 'dark' ? darkTheme.PageContainer : lightTheme.PageContainer;
 
   return (
-    <View style={styles.PageContainer}>
+    <View style={viewTheme}>
       {/* Image source: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fportrait&psig=AOvVaw1WZRC0VmXbiwwfT9NbAWqK&ust=1697891975372000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCIiu4tLShIIDFQAAAAAdAAAAABAE */}
       <Image
         style={styles.image}
         source={require('../assets/Images/StockImagePerson.jpg')}
       />
       <ProfileInfo
+        theme={theme}
         name={profile.name}
         age={profile.age}
         sex={profile.sex}
@@ -95,7 +145,7 @@ export const ProfilePage = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const lightTheme = StyleSheet.create({
   PageContainer: {
     height: '100%',
     width: '100%',
@@ -104,6 +154,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     padding: 10,
+    backgroundColor: COLORS.WHITE,
   },
   InformationRows: {
     width: '100%',
@@ -111,18 +162,46 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.GRAY,
     borderRadius: 10,
   },
+  LabelText: {
+    color: COLORS.WHITE,
+  },
+  InfoText: {
+    color: TEXT_COLORS.LIGHT_BLUE,
+  },
+});
+
+const darkTheme = StyleSheet.create({
+  PageContainer: {
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 10,
+    padding: 10,
+    backgroundColor: COLORS.LIGHT_BLACK,
+  },
+  InformationRows: {
+    width: '100%',
+    padding: 10,
+    backgroundColor: COLORS.WHITE,
+    borderRadius: 10,
+  },
+  LabelText: {
+    color: COLORS.LIGHT_BLACK,
+  },
+  InfoText: {
+    color: COLORS.BLUE,
+  },
+});
+
+const styles = StyleSheet.create({
   informationRowContainer: {
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 10,
-  },
-  LabelText: {
-    color: COLORS.WHITE,
-  },
-  InfoText: {
-    color: TEXT_COLORS.LIGHT_BLUE,
   },
   // https://stackoverflow.com/questions/50086665/react-native-rounded-image-with-a-border
   image: {

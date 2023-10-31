@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
-import {Button, SafeAreaView, Text} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useIsFocused} from '@react-navigation/core';
+import React, {useEffect, useState} from 'react';
+import {Button, StyleSheet, Text, View} from 'react-native';
+import {COLORS} from '../values/color';
 
 // source for help: https://www.bezkoder.com/javascript-fetch/
 
@@ -17,6 +20,23 @@ export const FetchExamplePage = () => {
       id: 0,
     },
   ]);
+  const [theme, setTheme] = useState<string>('light');
+  const isFocused = useIsFocused();
+
+  const getTheme = async () => {
+    try {
+      const storageTheme = await AsyncStorage.getItem('theme');
+      if (storageTheme !== null) {
+        setTheme(storageTheme);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTheme();
+  }, [isFocused]);
 
   const fetchData = async () => {
     const response = await fetch('http://localhost:3000/testdata/');
@@ -137,21 +157,49 @@ export const FetchExamplePage = () => {
     fetchData();
   };
 
+  const buttonColor = theme === 'dark' ? COLORS.GREEN : COLORS.RED;
+
   return (
-    <SafeAreaView>
-      <Text>Profiles: {JSON.stringify(data)}</Text>
-      <Button title="Add Profile" color="#841584" onPress={postTest} />
+    <View style={theme === 'dark' ? darkTheme.Container : lightTheme.Container}>
+      <Text style={theme === 'dark' ? darkTheme.Text : lightTheme.Text}>
+        Profiles: {JSON.stringify(data)}
+      </Text>
+      <Button title="Add Profile" color={buttonColor} onPress={postTest} />
       <Button
         title="Replace first profile"
-        color="#841584"
+        color={buttonColor}
         onPress={replaceFirstElement}
       />
       <Button
         title="Delete all profiles"
-        color="#841584"
+        color={buttonColor}
         onPress={deleteAllData}
       />
-      <Text>Status: {status}</Text>
-    </SafeAreaView>
+      <Text style={theme === 'dark' ? darkTheme.Text : lightTheme.Text}>
+        Status: {status}
+      </Text>
+    </View>
   );
 };
+
+const lightTheme = StyleSheet.create({
+  Container: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: COLORS.WHITE,
+  },
+  Text: {
+    color: COLORS.GRAY,
+  },
+});
+
+const darkTheme = StyleSheet.create({
+  Container: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: COLORS.LIGHT_BLACK,
+  },
+  Text: {
+    color: COLORS.WHITE,
+  },
+});
